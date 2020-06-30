@@ -45,7 +45,7 @@ def handle_turn(player, board):
         while not valid_position(position, board):
             position = (input('Invalid position, enter a position (1-9): '))
         valid_positions.remove(int(position) - 1)
-
+        # position input in board is removed from available positions
         board[int(position) - 1] = player
 
         print(valid_positions)
@@ -53,19 +53,14 @@ def handle_turn(player, board):
     elif player == AI_PLAYER:
 
         AI_Turn(player, board)
-        # position = random.choice(valid_positions)
-        # valid_positions.remove(position)
-        # board[(position)-1] = player
-
-    # valid_positions.remove(int(position))
 
     return board
 
 
 def valid_position(position, board):
+
     if int(position) in [1, 2, 3, 4, 5, 6, 7, 8, 9] and board[int(position) - 1] == EMPTY_SLOT:
         valid = True
-
     else:
         valid = False
 
@@ -84,14 +79,11 @@ def switch_player(player):
 
 def check_for_winner(board):
     winner = None
-    # filled_slots = 0
 
-    # TODO Check if any of the players got a win combo
-    # Hint: loop over WIN_COMBO to check if one of the combo is X-X-X or O-O-O
+    # loop over WIN_COMBO to check if one of the combinations is X-X-X or O-O-O
     for combo in WIN_COMBO:
 
         if board[combo[0]] == board[combo[1]] == board[combo[2]] and board[combo[0]] != EMPTY_SLOT:
-
             winner = board[combo[0]]
 
         elif EMPTY_SLOT not in board:
@@ -101,44 +93,41 @@ def check_for_winner(board):
 
 
 def AI_Turn(player, board):
-    print('whats happening')
     position = None
 
     for combo in WIN_COMBO:
-        # print (combo)
-        # print (position)
 
         # 1st - 3rd if statements check if AI_PLAYER can win next move
         if board[combo[0]] == board[combo[1]] == player and board[combo[2]] == EMPTY_SLOT:
             position = combo[2]
-            print('1st if')
-            print(position)
+            print('1st if activated')
+            break
 
         elif board[combo[0]] == board[combo[2]] == player and board[combo[1]] == EMPTY_SLOT:
             position = combo[1]
-            print('2nd if')
-            print(position)
+            print('2nd if activated')
+            break
 
         elif board[combo[1]] == board[combo[2]] == player and board[combo[0]] == EMPTY_SLOT:
             position = combo[0]
-            print('3rd if')
-            print(position)
+            print('3rd if activated')
+            break
 
         # 4th - 6th if statements check if player can win next move and blocks
         elif board[combo[0]] == board[combo[1]] == X_PLAYER and board[combo[2]] == EMPTY_SLOT:
             position = combo[2]
-            print('4th if')
-            print(position)
+            print('4th if activated')
+            break
 
         elif board[combo[0]] == board[combo[2]] == X_PLAYER and board[combo[1]] == EMPTY_SLOT:
             position = combo[1]
-            print('5th if')
-            print(position)
+            print('5th if activated')
+            break
 
         elif board[combo[1]] == board[combo[2]] == X_PLAYER and board[combo[0]] == EMPTY_SLOT:
             position = combo[0]
-            print('6th if')
-            print(position)
+            print('6th if activated')
+            break
 
     if not position:
         edges_move = []
@@ -152,17 +141,16 @@ def AI_Turn(player, board):
         if len(edges_move) != 0:
             # checks if any of the centre and edges are available and picks one randomly
             position = random.choice(edges_move)
-            print('edge centre called')
+            print('random edge-centre activated')
 
         else:
             # if non of conditions above are satisfied, any random position available is picked
             position = random.choice(valid_positions)
-            print('random activated')
+            print('random position activated')
 
     print(position)
     valid_positions.remove(position)
     board[(position)] = player
-    print(valid_positions)
 
 
 def start_player():  # Tosses a coin to determine who starts game
